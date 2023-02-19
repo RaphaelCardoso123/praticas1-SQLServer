@@ -120,7 +120,7 @@ INNER JOIN NOTAS_FISCAIS NF
 ON TC.CPF = NF.CPF
 
 SELECT COUNT(*) FROM TABELA_DE_CLIENTES;
-
+---------------------------------------------------------------------------------------------------------------------------------------
 INSERT INTO TABELA_DE_CLIENTES
 (CPF, NOME, ENDERECO_1, ENDERECO_2, BAIRRO, CIDADE, ESTADO, CEP, DATA_DE_NASCIMENTO
 , IDADE, GENERO, LIMITE_DE_CREDITO, VOLUME_DE_COMPRA, PRIMEIRA_COMPRA)
@@ -129,7 +129,7 @@ VALUES
 , 'RJ', '24588556', '1989-12-11', 33, 'F', 180000, 240000, 0);
 
 SELECT COUNT(*) FROM TABELA_DE_CLIENTES;
-
+---------------------------------------------------------------------------------------------------------------------------------------
 SELECT DISTINCT
 TC.CPF AS [CPF DO REGISTRO]
 , TC.NOME AS [NOME DO CLIENTE]
@@ -145,3 +145,126 @@ FROM TABELA_DE_CLIENTES TC
 LEFT JOIN NOTAS_FISCAIS NF
 ON TC.CPF = NF.CPF
 WHERE NF.CPF IS NULL;
+---------------------------------------------------------------------------------------------------------------------------------------
+SELECT COUNT(*) FROM TABELA_DE_CLIENTES;
+--16 clientes
+SELECT COUNT(*) FROM TABELA_DE_VENDEDORES;
+--4 vendedores
+SELECT DISTINCT
+  TC.NOME AS [NOME DO CLIENTE]
+, TC.BAIRRO AS [BAIRRO DO CLIENTE]
+, TV.NOME AS [NOME DO VENDEDOR]
+, TV.BAIRRO AS [BAIRRO DO VENDEDOR]
+FROM
+TABELA_DE_CLIENTES TC
+INNER JOIN
+TABELA_DE_VENDEDORES TV
+ON
+TC.BAIRRO = TV.BAIRRO;
+-- 16 cliente   -> 7 clientes possuem em seus bairros vendedores
+-- 4 vendedores -> 3 vendedores possuem em seus bairros clientes
+
+-- qual é o vendedor que não possui cliente no seu bairro?
+SELECT DISTINCT
+  TC.BAIRRO AS [BAIRRO DO CLIENTE]
+, TV.NOME AS [NOME DO VENDEDOR]
+, TV.BAIRRO AS [BAIRRO DO VENDEDOR]
+FROM
+TABELA_DE_CLIENTES TC
+RIGHT JOIN
+TABELA_DE_VENDEDORES TV
+ON
+TC.BAIRRO = TV.BAIRRO
+WHERE TC.NOME IS NULL;
+-- resposta: 1 vendedor
+
+--quais são os clientes que não possuem vendedores no seu bairro?
+SELECT DISTINCT
+  TC.NOME AS [NOME DO CLIENTE]
+, TC.BAIRRO AS [BAIRRO DO CLIENTE]
+, TV.NOME AS [NOME DO VENDEDOR]
+FROM
+TABELA_DE_CLIENTES TC
+LEFT JOIN
+TABELA_DE_VENDEDORES TV
+ON
+TC.BAIRRO = TV.BAIRRO
+WHERE TV.NOME IS NULL;
+-- resposta: 9 clientes
+
+-- usando FULL JOIN  ele me responde as duas perguntas de uma só vez
+SELECT DISTINCT
+  TV.NOME AS [NOME DO VENDEDOR]
+, TV.BAIRRO AS [BAIRRO DO VENDEDOR]
+, TC.NOME AS [NOME DO CLIENTE]
+, TC.BAIRRO AS [BAIRRO DO CLIENTE]
+FROM
+TABELA_DE_CLIENTES TC
+FULL JOIN
+TABELA_DE_VENDEDORES TV
+ON
+TC.BAIRRO = TV.BAIRRO;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
