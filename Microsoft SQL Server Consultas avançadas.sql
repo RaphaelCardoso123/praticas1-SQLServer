@@ -221,8 +221,18 @@ UNION ALL
 SELECT DISTINCT BAIRRO FROM TABELA_DE_VENDEDORES;
 -- 16 bairros juntando as duas tabelas repetindo bairros em comum
 
+SELECT DISTINCT BAIRRO, 'CLIENTE' AS ORIGIEM FROM TABELA_DE_CLIENTES
+UNION ALL
+SELECT DISTINCT BAIRRO, 'FORNECEDOR' AS ORIGEM FROM TABELA_DE_VENDEDORES;
+---------------------------------------------------------------------------------------------------------------------------------------
+SELECT DISTINCT BAIRRO FROM TABELA_DE_VENDEDORES;
+--resultado: Copacabana, Jardins, Santo Amaro, Tijuca
+SELECT * FROM TABELA_DE_CLIENTES WHERE BAIRRO IN ('Copacabana', 'Jardins', 'Santo Amaro', 'Tijuca');
+--vai dar o resultado esperado
 
-
+--ao invés de ter que fazer essas duas consultas para chegar no resultado desejado, posso fazer assim:
+SELECT * FROM TABELA_DE_CLIENTES WHERE BAIRRO IN (SELECT DISTINCT BAIRRO FROM TABELA_DE_VENDEDORES);
+--dessa forma tenho o msm resultado que as duas pesquisas anteriores
 
 
 
