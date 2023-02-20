@@ -335,6 +335,56 @@ DATENAME (DAY,DATA_DE_NASCIMENTO) + ' de ' +
 DATENAME(MONTH, DATA_DE_NASCIMENTO) + ' de ' +
 DATENAME(YEAR, DATA_DE_NASCIMENTO) AS DATA_EXTENSO
 FROM TABELA_DE_CLIENTES;
+---------------------------------------------------------------------------------------------------------------------------------------
+--round
+SELECT ROUND(3.4284891, 2);
+--ceiling
+SELECT CEILING(3.4893);
+--floor
+SELECT FLOOR(3.4893);
+---------------------------------------------------------------------------------------------------------------------------------------
+SELECT YEAR(DATA_VENDA) AS ANO, FLOOR(SUM(IMPOSTO * (QUANTIDADE * PRECO))) 
+FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(DATA_VENDA) = 2016
+GROUP BY YEAR(DATA_VENDA);
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
