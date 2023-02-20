@@ -225,6 +225,8 @@ SELECT DISTINCT BAIRRO, 'CLIENTE' AS ORIGIEM FROM TABELA_DE_CLIENTES
 UNION ALL
 SELECT DISTINCT BAIRRO, 'FORNECEDOR' AS ORIGEM FROM TABELA_DE_VENDEDORES;
 ---------------------------------------------------------------------------------------------------------------------------------------
+--subconsultas(subquery)
+
 SELECT DISTINCT BAIRRO FROM TABELA_DE_VENDEDORES;
 --resultado: Copacabana, Jardins, Santo Amaro, Tijuca
 SELECT * FROM TABELA_DE_CLIENTES WHERE BAIRRO IN ('Copacabana', 'Jardins', 'Santo Amaro', 'Tijuca');
@@ -248,6 +250,7 @@ GROUP BY INF.CODIGO_DO_PRODUTO, TP.NOME_DO_PRODUTO, TP.SABOR HAVING SUM(INF.QUAN
 ORDER BY SUM(INF.QUANTIDADE) DESC;
 --assim mostra CODIGO_DO_PRODUTO, NOME_DO_PRODUTO, QUANTIDADE e também inclui SABOR.
 
+--subconsultas(subquery)
 SELECT DISTINCT SABOR FROM TABELA_DE_PRODUTOS WHERE
 CODIGO_DO_PRODUTO IN (
 SELECT INF.CODIGO_DO_PRODUTO FROM ITENS_NOTAS_FISCAIS  INF
@@ -255,14 +258,27 @@ INNER JOIN TABELA_DE_PRODUTOS TP
 ON INF.CODIGO_DO_PRODUTO = TP.CODIGO_DO_PRODUTO
 GROUP BY INF.CODIGO_DO_PRODUTO, TP.NOME_DO_PRODUTO HAVING SUM(INF.QUANTIDADE) > 394000 );
 --assim vai mostrar SABOR usando SUBCONSULTAS
+---------------------------------------------------------------------------------------------------------------------------------------
+--subconsultas(subquery)
+SELECT EMBALAGEM, AVG(PRECO_DE_LISTA) AS [PRECO MEDIO]
+FROM TABELA_DE_PRODUTOS GROUP BY EMBALAGEM;
+--vai mostrar embalagem e o preço médio
 
+--usando HAVING
+SELECT EMBALAGEM, AVG(PRECO_DE_LISTA) AS [PRECO MEDIO]
+FROM TABELA_DE_PRODUTOS GROUP BY EMBALAGEM
+HAVING AVG(PRECO_DE_LISTA) <= 10;
+--vai mostrar embalagem e o preço médio	que são menores ou igauis a 10	
 
+--A DE CIMA E A DE BAIXO VÃO DAR O MSM RESULTADO, UMA USANDO HAVING E A OUTRA SUBQUERY
 
-
-
-
-
-
+--usando subconsulta(subquery)
+SELECT MEDIA_EMBALAGENS.EMBALAGEM, MEDIA_EMBALAGENS.[PRECO MEDIO]
+FROM
+(SELECT EMBALAGEM, AVG(PRECO_DE_LISTA) AS [PRECO MEDIO]
+FROM TABELA_DE_PRODUTOS GROUP BY EMBALAGEM) MEDIA_EMBALAGENS
+WHERE MEDIA_EMBALAGENS.[PRECO MEDIO] <= 10;
+--vai mostrar embalagem e o preço médio	que são menores ou igauis a 10	
 
 
 
