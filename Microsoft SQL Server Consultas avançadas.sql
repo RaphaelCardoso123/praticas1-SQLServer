@@ -204,13 +204,22 @@ FULL JOIN
 TABELA_DE_VENDEDORES TV
 ON
 TC.BAIRRO = TV.BAIRRO;
+---------------------------------------------------------------------------------------------------------------------------------------
+SELECT DISTINCT BAIRRO FROM TABELA_DE_CLIENTES;
+-- 12 bairros relacionado com clientes
 
+SELECT DISTINCT BAIRRO FROM TABELA_DE_VENDEDORES;
+-- 4 bairros relacionado com vendedores
 
+SELECT DISTINCT BAIRRO FROM TABELA_DE_CLIENTES
+UNION
+SELECT DISTINCT BAIRRO FROM TABELA_DE_VENDEDORES;
+-- 13 bairros juntando as duas pesquisas sem repetir 
 
-
-
-
-
+SELECT DISTINCT BAIRRO FROM TABELA_DE_CLIENTES
+UNION ALL
+SELECT DISTINCT BAIRRO FROM TABELA_DE_VENDEDORES;
+-- 16 bairros juntando as duas tabelas repetindo bairros em comum
 
 
 
