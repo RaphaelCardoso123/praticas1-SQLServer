@@ -388,7 +388,7 @@ NF.CPF --group by esse campo
 , CONVERT(VARCHAR(7), NF.DATA_VENDA, 120); --e group by por esse campo tmb
 
 
---para saber quanto esse cpf estava acertado de comprar e quantos ele comprou
+--para saber quanto esse cpf tinha no contrato de comprar e quantos ele comprou
 SELECT
 TC.CPF, TC.NOME, TC.VOLUME_DE_COMPRA, TV.[MES DO ANO], TV.[QUANTIDADE TOTAL]
 FROM TABELA_DE_CLIENTES TC --vou pegar a tabela_de_clientes
@@ -409,8 +409,27 @@ ON
 TV.CPF = TC.CPF; --antes o cpf estava sendo chamado de nf.cpf mas agora foi nomeado como tv, entâo fica tv.cpf
 
 
-
-
+--é a mesma query anterior mas adicionei o (case when then / else end) pra saber se é uma compra válida ou não segundo o contrato do cpf
+SELECT
+TC.CPF, TC.NOME, TC.VOLUME_DE_COMPRA, TV.[MES DO ANO], TV.[QUANTIDADE TOTAL],
+(CASE WHEN TC.VOLUME_DE_COMPRA >= TV.[QUANTIDADE TOTAL] THEN 'VENDAS VÁLIDAS'--quando o valor de contrato(volume_de_compra) for maior do que o vendido
+ELSE 'VENDAS INVÁLIDAS' END) AS RESULTADO
+FROM TABELA_DE_CLIENTES TC 
+INNER JOIN 
+(
+SELECT 
+NF.CPF
+, CONVERT(VARCHAR(7), NF.DATA_VENDA, 120) AS [MES DO ANO] 
+, SUM(INF.QUANTIDADE) AS [QUANTIDADE TOTAL] 
+FROM NOTAS_FISCAIS NF 
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+GROUP BY 
+NF.CPF 
+, CONVERT(VARCHAR(7), NF.DATA_VENDA, 120)
+) TV 
+ON
+TV.CPF = TC.CPF;
 
 
 
