@@ -371,12 +371,18 @@ NF.CPF --da tabela notas_fiscais eu quero o cpf
 , INF.QUANTIDADE --e da tabela itens_notas_fiscais quero o campo quantidade
 FROM NOTAS_FISCAIS NF --junta essa tabela
 INNER JOIN ITENS_NOTAS_FISCAIS INF --com essa
-ON NF.NUMERO = INF.NUMERO --que tem esses dois campos em comum / é a ligação entre elas
+ON NF.NUMERO = INF.NUMERO; --que tem esses dois campos em comum / é a ligação entre elas
 
-
-
-
-
+SELECT 
+NF.CPF
+, CONVERT(VARCHAR(7), NF.DATA_VENDA, 120) AS [MES DO ANO] --o convert com varchar de 7 caracteres vai tirar o dia e deixar ano e mês / e o 120 é a máscara(código) que mostra ano e mês
+, SUM(INF.QUANTIDADE) AS [QUANTIDADE TOTAL] --sum para calcular a quantidade total do mês e do ano
+FROM NOTAS_FISCAIS NF 
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+GROUP BY --apartir do momento que usou o sum é obrigado a usar um group by
+NF.CPF --group by esse campo
+, CONVERT(VARCHAR(7), NF.DATA_VENDA, 120) --e group by por esse campo tmb
 
 
 
