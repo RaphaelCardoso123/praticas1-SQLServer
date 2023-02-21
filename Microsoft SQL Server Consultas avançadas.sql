@@ -270,7 +270,7 @@ FROM TABELA_DE_PRODUTOS GROUP BY EMBALAGEM
 HAVING AVG(PRECO_DE_LISTA) <= 10;
 --vai mostrar embalagem e o preço médio	que são menores ou igauis a 10	
 
---A DE CIMA E A DE BAIXO VÃO DAR O MSM RESULTADO, UMA USANDO HAVING E A OUTRA SUBQUERY
+--a de cima e a de baixo vão dar o msm resultado, uma usando having e a outra subquery
 
 --usando subconsulta(subquery)
 SELECT MEDIA_EMBALAGENS.EMBALAGEM, MEDIA_EMBALAGENS.[PRECO MEDIO]
@@ -364,7 +364,14 @@ FROM TABELA_DE_CLIENTES;
 SELECT NOME_DO_PRODUTO, PRECO_DE_LISTA FROM TABELA_DE_PRODUTOS;
 
 SELECT NOME_DO_PRODUTO, CONCAT('O preço de lista é: ', PRECO_DE_LISTA) AS PRECO FROM TABELA_DE_PRODUTOS;
-
+---------------------------------------------------------------------------------------------------------------------------------------
+SELECT 
+NF.CPF --da tabela notas_fiscais eu quero o cpf
+, NF.DATA_VENDA --da tabela notas_fiscais tmb wuero a data_venda
+, INF.QUANTIDADE --e da tabela itens_notas_fiscais quero o campo quantidade
+FROM NOTAS_FISCAIS NF --junta essa tabela
+INNER JOIN ITENS_NOTAS_FISCAIS INF --com essa
+ON NF.NUMERO = INF.NUMERO --que tem esses dois campos em comum / é a ligação entre elas
 
 
 
