@@ -365,6 +365,7 @@ SELECT NOME_DO_PRODUTO, PRECO_DE_LISTA FROM TABELA_DE_PRODUTOS;
 
 SELECT NOME_DO_PRODUTO, CONCAT('O preço de lista é: ', PRECO_DE_LISTA) AS PRECO FROM TABELA_DE_PRODUTOS;
 ---------------------------------------------------------------------------------------------------------------------------------------
+--para saber as compras de um cpf
 SELECT 
 NF.CPF --da tabela notas_fiscais eu quero o cpf
 , NF.DATA_VENDA --da tabela notas_fiscais tmb wuero a data_venda
@@ -373,6 +374,8 @@ FROM NOTAS_FISCAIS NF --junta essa tabela
 INNER JOIN ITENS_NOTAS_FISCAIS INF --com essa
 ON NF.NUMERO = INF.NUMERO; --que tem esses dois campos em comum / é a ligação entre elas
 
+
+--para saber o total de compra que esse cpf fez no mês
 SELECT 
 NF.CPF
 , CONVERT(VARCHAR(7), NF.DATA_VENDA, 120) AS [MES DO ANO] --o convert com varchar de 7 caracteres vai tirar o dia e deixar ano e mês / e o 120 é a máscara(código) que mostra ano e mês
@@ -382,11 +385,28 @@ INNER JOIN ITENS_NOTAS_FISCAIS INF
 ON NF.NUMERO = INF.NUMERO
 GROUP BY --apartir do momento que usou o sum é obrigado a usar um group by
 NF.CPF --group by esse campo
-, CONVERT(VARCHAR(7), NF.DATA_VENDA, 120) --e group by por esse campo tmb
+, CONVERT(VARCHAR(7), NF.DATA_VENDA, 120); --e group by por esse campo tmb
 
 
-
-
+--para saber quanto esse cpf estava acertado de comprar e quantos ele comprou
+SELECT
+TC.CPF, TC.NOME, TC.VOLUME_DE_COMPRA, TV.[MES DO ANO], TV.[QUANTIDADE TOTAL]
+FROM TABELA_DE_CLIENTES TC --vou pegar a tabela_de_clientes
+INNER JOIN --e unir com a query inteira que fiz anteriormente, isso se chama subquery
+(
+SELECT 
+NF.CPF
+, CONVERT(VARCHAR(7), NF.DATA_VENDA, 120) AS [MES DO ANO] 
+, SUM(INF.QUANTIDADE) AS [QUANTIDADE TOTAL] 
+FROM NOTAS_FISCAIS NF 
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+GROUP BY 
+NF.CPF 
+, CONVERT(VARCHAR(7), NF.DATA_VENDA, 120)
+) TV --é preciso ter um alias, então estou chamando de tv(total vendas)
+ON
+TV.CPF = TC.CPF; --antes o cpf estava sendo chamado de nf.cpf mas agora foi nomeado como tv, entâo fica tv.cpf
 
 
 
