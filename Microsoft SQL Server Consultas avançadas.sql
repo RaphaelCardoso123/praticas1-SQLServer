@@ -432,8 +432,29 @@ ON
 TV.CPF = TC.CPF;
 
 
-
-
+--essa é a mesma query anterior mas agora estou filtrando um mês e um ano epecífico usando um where no final
+SELECT
+TC.CPF, TC.NOME, TC.VOLUME_DE_COMPRA, TV.[MES DO ANO], TV.[QUANTIDADE TOTAL],
+(CASE WHEN TC.VOLUME_DE_COMPRA >= TV.[QUANTIDADE TOTAL] THEN 'VENDAS VÁLIDAS'
+ELSE 'VENDAS INVÁLIDAS' END) AS RESULTADO
+FROM TABELA_DE_CLIENTES TC 
+INNER JOIN 
+(
+SELECT 
+NF.CPF
+, CONVERT(VARCHAR(7), NF.DATA_VENDA, 120) AS [MES DO ANO] 
+, SUM(INF.QUANTIDADE) AS [QUANTIDADE TOTAL] 
+FROM NOTAS_FISCAIS NF 
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+GROUP BY 
+NF.CPF 
+, CONVERT(VARCHAR(7), NF.DATA_VENDA, 120)
+) TV 
+ON
+TV.CPF = TC.CPF
+WHERE TV.[MES DO ANO] = '2015-01'; --para  ter os dados nesse mês e nesse ano
+---------------------------------------------------------------------------------------------------------------------------------------
 
 
 
