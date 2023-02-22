@@ -522,6 +522,7 @@ GROUP BY YEAR(NF.DATA_VENDA);
 
 --essa me mostra a porcentagem de vendas
 SELECT
+VS.SABOR, VS.ANO, VS.[VENDA DO ANO], VA.[VENDA TOTAL]
 FROM --pegando a penúltima query que foi feita
 (
 SELECT
@@ -535,7 +536,7 @@ INNER JOIN NOTAS_FISCAIS NF
 ON INF.NUMERO = NF.NUMERO
 WHERE YEAR(NF.DATA_VENDA) = 2015
 GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA) 
-ORDER BY SUM(INF.QUANTIDADE) DESC
+--ORDER BY SUM(INF.QUANTIDADE) DESC --não pode ter um order by em uma subquery
 ) VS --chamando a primeira query de vs (venda sabor)
 INNER JOIN --e juntando ela com a última feita acima
 (
@@ -548,5 +549,5 @@ ON NF.NUMERO = INF.NUMERO
 WHERE YEAR(NF.DATA_VENDA) = 2017
 GROUP BY YEAR(NF.DATA_VENDA)
 ) VA --e a segunda quer de vc (venda do ano)
-ON VS.ANO = VA.ANO --o ponto em comuns das duas query
+ON VS.ANO = VA.ANO; --o ponto em comuns das duas query
 
