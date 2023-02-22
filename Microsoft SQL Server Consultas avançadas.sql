@@ -456,6 +456,7 @@ TV.CPF = TC.CPF
 WHERE TV.[MES DO ANO] = '2015-01'; --para  ter os dados nesse mês e nesse ano
 ---------------------------------------------------------------------------------------------------------------------------------------
 --listando somente os que tiveram vendas inválidas e calculando a diferença entre o limite de venda máximo e o realizado, em percentuais.
+
 SELECT
 TC.CPF, TC.NOME, TC.VOLUME_DE_COMPRA, TV.[MES DO ANO], TV.[QUANTIDADE TOTAL],
 (CASE WHEN TC.VOLUME_DE_COMPRA >= TV.[QUANTIDADE TOTAL] THEN 'VENDAS VÁLIDAS'
@@ -504,10 +505,17 @@ ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO
 INNER JOIN NOTAS_FISCAIS NF 
 ON INF.NUMERO = NF.NUMERO
 WHERE YEAR(NF.DATA_VENDA) = '2016' --com um ano específico
-GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA); --group by é necessário por ter usado o sum
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA) --group by é necessário por ter usado o sum
+ORDER BY SUM(INF.QUANTIDADE) DESC; --para ordenar das maiores vendas para as menores
 
 
-
-
+SELECT
+YEAR(NF.DATA_VENDA) AS ANO
+, SUM(INF.QUANTIDADE) AS [VENDA TOTAL]
+FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = '2017'
+GROUP BY YEAR(NF.DATA_VENDA);
 
 
