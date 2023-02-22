@@ -496,14 +496,15 @@ ON INF.NUMERO = NF.NUMERO; -- e ligando ela com a tabela itens_notas_fiscais pel
 --a msm consulta que a anterior mas pegando somente o ano da venda e a soma do sabor que foi vendida neste periodo
 SELECT
 TP.SABOR 
-, YEAR(NF.DATA_VENDA) AS ANO 
-, SUM(INF.QUANTIDADE) AS [VENDA DO ANO]
+, YEAR(NF.DATA_VENDA) AS ANO --para pegar somente o ano
+, SUM(INF.QUANTIDADE) AS [VENDA DO ANO] --para fazer a soma das vendas
 FROM TABELA_DE_PRODUTOS TP
 INNER JOIN ITENS_NOTAS_FISCAIS INF 
 ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO 
 INNER JOIN NOTAS_FISCAIS NF 
 ON INF.NUMERO = NF.NUMERO
-GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA);
+WHERE YEAR(NF.DATA_VENDA) = '2016' --com um ano específico
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA); --group by é necessário por ter usado o sum
 
 
 
