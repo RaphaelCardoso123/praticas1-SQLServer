@@ -478,10 +478,18 @@ NF.CPF
 ON TV.CPF = TC.CPF
 WHERE TV.[MES DO ANO] = '2015-01'
 AND (TC.VOLUME_DE_COMPRA - TV.[QUANTIDADE TOTAL]) < 0;
+---------------------------------------------------------------------------------------------------------------------------------------
+--join entre três tabelas
 
-
-
-
+SELECT
+TP.SABOR --quero o sabor da tabela_de_produto
+, NF.CPF --tmb quero o cpf da tabela notas_fiscais
+, INF.QUANTIDADE --e quero a quantidade da tabela itens_notas_fiscais
+FROM TABELA_DE_PRODUTOS TP -- juntando tabela_de_produtos
+INNER JOIN ITENS_NOTAS_FISCAIS INF --com itens_notas_fiscais
+ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO --o campo que as duas tabelas tem iguais, que fazem a ligaçãp entre elas
+INNER JOIN NOTAS_FISCAIS NF --ligando a terceira tabela (notas_fiscais)
+ON INF.NUMERO = NF.NUMERO; -- e ligando ela com a tabela itens_notas_fiscais pelo campo em comum das duas
 
 
 
