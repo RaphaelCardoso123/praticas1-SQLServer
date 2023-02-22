@@ -481,9 +481,10 @@ AND (TC.VOLUME_DE_COMPRA - TV.[QUANTIDADE TOTAL]) < 0;
 ---------------------------------------------------------------------------------------------------------------------------------------
 --join entre três tabelas
 
+--pegando o sabor, a data da venda e a quantidade vendida
 SELECT
 TP.SABOR --quero o sabor da tabela_de_produto
-, NF.CPF --tmb quero o cpf da tabela notas_fiscais
+, NF.DATA_VENDA AS [DATA DA VENDA]--tmb quero a data_venda da tabela notas_fiscais
 , INF.QUANTIDADE --e quero a quantidade da tabela itens_notas_fiscais
 FROM TABELA_DE_PRODUTOS TP -- juntando tabela_de_produtos
 INNER JOIN ITENS_NOTAS_FISCAIS INF --com itens_notas_fiscais
@@ -492,7 +493,17 @@ INNER JOIN NOTAS_FISCAIS NF --ligando a terceira tabela (notas_fiscais)
 ON INF.NUMERO = NF.NUMERO; -- e ligando ela com a tabela itens_notas_fiscais pelo campo em comum das duas
 
 
-
+--a msm consulta que a anterior mas pegando somente o ano da venda e a soma do sabor que foi vendida neste periodo
+SELECT
+TP.SABOR 
+, YEAR(NF.DATA_VENDA) AS ANO 
+, SUM(INF.QUANTIDADE) AS [VENDA DO ANO]
+FROM TABELA_DE_PRODUTOS TP
+INNER JOIN ITENS_NOTAS_FISCAIS INF 
+ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO 
+INNER JOIN NOTAS_FISCAIS NF 
+ON INF.NUMERO = NF.NUMERO
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA);
 
 
 
