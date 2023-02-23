@@ -374,7 +374,6 @@ FROM NOTAS_FISCAIS NF --junta essa tabela
 INNER JOIN ITENS_NOTAS_FISCAIS INF --com essa
 ON NF.NUMERO = INF.NUMERO; --que tem esses dois campos em comum / é a ligação entre elas
 
-
 --para saber o total de compra que esse cpf fez no mês
 SELECT 
 NF.CPF
@@ -386,7 +385,6 @@ ON NF.NUMERO = INF.NUMERO
 GROUP BY --apartir do momento que usou o sum é obrigado a usar um group by
 NF.CPF --group by esse campo
 , CONVERT(VARCHAR(7), NF.DATA_VENDA, 120); --e group by por esse campo tmb
-
 
 --para saber quanto esse cpf tinha no contrato de comprar e quantos ele comprou
 SELECT
@@ -407,7 +405,6 @@ NF.CPF
 ) TV --é preciso ter um alias, então estou chamando de tv(total vendas)
 ON
 TV.CPF = TC.CPF; --antes o cpf estava sendo chamado de nf.cpf mas agora foi nomeado como tv, entâo fica tv.cpf
-
 
 --é a mesma query anterior mas adicionei o (case when then / else end) pra saber se é uma compra válida ou não segundo o contrato do cpf
 SELECT
@@ -430,7 +427,6 @@ NF.CPF
 ) TV 
 ON
 TV.CPF = TC.CPF;
-
 
 --essa é a mesma query anterior mas agora estou filtrando um mês e um ano epecífico usando um where no final
 SELECT
@@ -493,7 +489,6 @@ ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO --o campo que as duas tabelas te
 INNER JOIN NOTAS_FISCAIS NF --ligando a terceira tabela (notas_fiscais)
 ON INF.NUMERO = NF.NUMERO; -- e ligando ela com a tabela itens_notas_fiscais pelo campo em comum das duas
 
-
 --a msm consulta que a anterior mas pegando somente o ano da venda e a soma do sabor que foi vendida neste periodo
 SELECT
 TP.SABOR 
@@ -508,7 +503,6 @@ WHERE YEAR(NF.DATA_VENDA) = 2016 --com um ano específico
 GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA) --group by é necessário por ter usado o sum
 ORDER BY SUM(INF.QUANTIDADE) DESC; --para ordenar das maiores vendas para as menores
 
-
 --essa me mostra as vendas gerais de um específico ano independente do sabor
 SELECT
 YEAR(NF.DATA_VENDA) AS ANO
@@ -518,7 +512,6 @@ INNER JOIN ITENS_NOTAS_FISCAIS INF
 ON NF.NUMERO = INF.NUMERO
 WHERE YEAR(NF.DATA_VENDA) = 2017
 GROUP BY YEAR(NF.DATA_VENDA);
-
 
 --essa me mostra a porcentagem de vendas
 SELECT
@@ -552,7 +545,6 @@ GROUP BY YEAR(NF.DATA_VENDA)
 ON VS.ANO = VA.ANO --o ponto em comuns das duas query
 ORDER BY VS.[VENDA DO ANO] DESC;
 
-
 --essa é a msm que a anterior, mas agora fazendo com que ela me dê a porcentagem
 SELECT
 VS.SABOR, VS.ANO, VS.[VENDA DO ANO], VA.[VENDA TOTAL],
@@ -585,7 +577,6 @@ GROUP BY YEAR(NF.DATA_VENDA)
 ON VS.ANO = VA.ANO 
 ORDER BY VS.[VENDA DO ANO] DESC;
 
-
 --essa é a msm que a anterior mas usando (convert, float) para conversão de int em float e o (round, 2) para dar apenas duas casas após a virgula
 SELECT
 VS.SABOR, VS.ANO, VS.[VENDA DO ANO], VA.[VENDA TOTAL],
@@ -617,7 +608,6 @@ GROUP BY YEAR(NF.DATA_VENDA)
 ) VA
 ON VS.ANO = VA.ANO 
 ORDER BY VS.[VENDA DO ANO] DESC;
-
 
 --mostrando o tamanho do produto que foi mais vendido
 SELECT
