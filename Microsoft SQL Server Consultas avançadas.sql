@@ -551,3 +551,84 @@ GROUP BY YEAR(NF.DATA_VENDA)
 ) VA --e a segunda quer de vc (venda do ano)
 ON VS.ANO = VA.ANO --o ponto em comuns das duas query
 ORDER BY VS.[VENDA DO ANO] DESC;
+
+
+--essa é a msm que a anterior, mas agora fazendo com que ela me dê a porcentagem
+SELECT
+VS.SABOR, VS.ANO, VS.[VENDA DO ANO], VA.[VENDA TOTAL],
+(VS.[VENDA DO ANO] / VA.[VENDA TOTAL]) * 100 AS PERCENTUAL --essa parte que vai me dar o percentual em uma nova coluna, mas os números a serem divididos estão em int logo a resposta é int wue é um erro
+FROM 
+(
+SELECT
+TP.SABOR 
+, YEAR(NF.DATA_VENDA) AS ANO 
+, SUM(INF.QUANTIDADE) AS [VENDA DO ANO] 
+FROM TABELA_DE_PRODUTOS TP
+INNER JOIN ITENS_NOTAS_FISCAIS INF 
+ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO 
+INNER JOIN NOTAS_FISCAIS NF 
+ON INF.NUMERO = NF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2015
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA) 
+) VS
+INNER JOIN 
+(
+SELECT
+YEAR(NF.DATA_VENDA) AS ANO
+, SUM(INF.QUANTIDADE) AS [VENDA TOTAL]
+FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2015
+GROUP BY YEAR(NF.DATA_VENDA)
+) VA
+ON VS.ANO = VA.ANO 
+ORDER BY VS.[VENDA DO ANO] DESC;
+
+
+--essa é a msm que a anterior mas usando (convert, float) para conversão de int em float e o (round, 2) para dar apenas duas casas após a virgula
+SELECT
+VS.SABOR, VS.ANO, VS.[VENDA DO ANO], VA.[VENDA TOTAL],
+ROUND((CONVERT(FLOAT, VS.[VENDA DO ANO]) / CONVERT(FLOAT, VA.[VENDA TOTAL])) * 100 ,2) AS PERCENTUAL --agora usando convert converto essa parte p/ float vai dar a porcentagem como esperado
+FROM                                                                                                 --e usando o round  e o 2 no final (depois de *100) eu digo que quero duas casas decimais
+(
+SELECT
+TP.SABOR 
+, YEAR(NF.DATA_VENDA) AS ANO 
+, SUM(INF.QUANTIDADE) AS [VENDA DO ANO] 
+FROM TABELA_DE_PRODUTOS TP
+INNER JOIN ITENS_NOTAS_FISCAIS INF 
+ON TP.CODIGO_DO_PRODUTO = INF.CODIGO_DO_PRODUTO 
+INNER JOIN NOTAS_FISCAIS NF 
+ON INF.NUMERO = NF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2015
+GROUP BY TP.SABOR, YEAR(NF.DATA_VENDA) 
+) VS
+INNER JOIN 
+(
+SELECT
+YEAR(NF.DATA_VENDA) AS ANO
+, SUM(INF.QUANTIDADE) AS [VENDA TOTAL]
+FROM NOTAS_FISCAIS NF
+INNER JOIN ITENS_NOTAS_FISCAIS INF
+ON NF.NUMERO = INF.NUMERO
+WHERE YEAR(NF.DATA_VENDA) = 2015
+GROUP BY YEAR(NF.DATA_VENDA)
+) VA
+ON VS.ANO = VA.ANO 
+ORDER BY VS.[VENDA DO ANO] DESC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
